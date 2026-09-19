@@ -1,0 +1,11 @@
+# IGNORE EVERYTHING (closed-source — portfolio showcase only)
+*
+
+# =================================================================
+# EXCEPTIONS: The ONLY files that will be pushed to GitHub
+# =================================================================
+!.gitignore
+!README.md
+!README.ar.md
+!screenshots/
+!screenshots/**
