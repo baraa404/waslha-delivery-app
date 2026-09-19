@@ -17,6 +17,20 @@
 
 ---
 
+## 📲 Download
+
+<div align="center">
+
+[![Download APK](https://img.shields.io/badge/Download-Android%20APK-FB3C04?style=for-the-badge&logo=android&logoColor=white)](https://github.com/baraa404/waslha-delivery-app/releases/latest/download/Waslha.apk)
+
+[All releases](https://github.com/baraa404/waslha-delivery-app/releases/latest)
+
+</div>
+
+Android APK · v1.0.0 · sideload install (allow unknown sources).
+
+---
+
 ## 📸 Screenshots
 
 > Screenshots coming soon.
