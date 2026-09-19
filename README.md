@@ -1,45 +1,25 @@
-# Waslha — Delivery App
+# 🚚 Waslha — Delivery App
 
 <div align="center">
-
-**[English](README.md)** · **[العربية](README.ar.md)**
-
-<br>
-
-<img src="screenshots/logo.png" width="120" alt="Waslha logo" />
-
-<br>
-
-**وصلة** — a two-sided delivery marketplace for Jordan (and Egypt).
-
-Customers post point-to-point deliveries. Nearby drivers claim them, complete them with a QR scan, and get rated. Operations run the platform from a web admin panel. Sales reps grow the network with referral codes.
-
-<br>
-
-`Arabic · English` · `Flutter` · `Firebase` · `Riverpod` · `#FB3C04`
-
+  <p>
+    <strong><a href="README.md">English</a></strong> · <strong><a href="README.ar.md">العربية</a></strong>
+  </p>
+  <img src="screenshots/logo.png" width="120" alt="Waslha logo" />
+  <p>A production-ready, Arabic-first delivery marketplace built with Flutter.</p>
+  <p>
+    <strong>Point-to-Point • QR Completion • Bulk Drops • Feature-First</strong>
+  </p>
 </div>
 
 ---
 
-> **Note:** The source code for this project is proprietary and closed-source. This repository is a portfolio showcase of the product, features, and UI — not the application source.
+> 🔒 **Note:** The source code for this project is proprietary and closed-source. This repository serves purely as a portfolio showcase of the architecture, features, and user interface.
 
 ---
 
-## Live links
+## 📸 Screenshots
 
-| | |
-|---|---|
-| Public site | [waslha-application.web.app](https://waslha-application.web.app) |
-| Privacy | [Privacy policy](https://waslha-application.web.app/privacy) |
-| Terms | [Terms of use](https://waslha-application.web.app/terms) |
-| Delete account | [Account deletion](https://waslha-application.web.app/delete-account) |
-
----
-
-## Screenshots
-
-> Screenshots coming soon — drop files into `screenshots/` and they will appear here.
+> Screenshots coming soon.
 
 <!--
 <div align="center">
@@ -59,111 +39,74 @@ Customers post point-to-point deliveries. Nearby drivers claim them, complete th
 
 ---
 
-## Overview
+## 🌟 Overview
 
-Waslha (وصلة — “connection”) links anyone who needs a delivery with nearby drivers. It is built for general parcel / point-to-point transport — not food delivery only.
+Waslha (وصلة — “connection”) is a two-sided delivery marketplace for shops and anyone sending or receiving a parcel. Customers post a pickup and drop-off. Nearby drivers claim the job, complete it with a QR scan, and get rated. An operations team runs the whole thing from an Arabic RTL admin panel. Sales reps grow the network with referral codes.
 
-**Roles**
-
-| Role | What they do |
-|------|----------------|
-| **Customer** | Shops or individuals — create single or bulk deliveries, track status, confirm pickup, show QR at drop-off |
-| **Driver** | Go online, claim matching jobs, scan QR to complete, earn from delivery fees |
-| **Sales rep** | Admin-provisioned — share a referral code, earn commission on referred drivers & merchants |
-| **Admin** | Web panel — approve drivers, manage orders, pricing, commissions, and platform config |
+This is not a food-delivery clone. It is engineered for **general point-to-point transport** — with server-side fees, vehicle matching, bulk drops, and a real approval pipeline before a driver ever sees work.
 
 ---
 
-## Product highlights
+## 🧠 The features that make it different
 
-### Mobile (customers & drivers)
+### 🗺️ 1. Create a delivery without fighting the map
+Pickup and drop-off can be set three ways: paste a **Google Maps link**, drop a pin, or use current location. The app resolves the link to coordinates, draws the route, and shows distance + ETA before the customer confirms.
 
-- Full **Arabic / English** UI (Cairo typeface, RTL-ready)
-- Sign in with **Google**, email & password, email verification, and **SMS phone OTP**
-- Country-aware accounts (**Jordan** / **Egypt**) with matching currency labels
-- Map pickup & drop-off via pin picker, current location, or pasted **Google Maps links**
-- Route preview with distance and ETA
-- Timing options: urgent / later today / within 2 days (with configurable surcharges)
-- **Bulk deliveries**: one pickup, up to 10 drop-offs, one driver for the batch
-- Fee preview before confirm (distance-based or Amman flat-zone pricing)
-- Order lifecycle with accept / reject driver, release, cancel, and ratings
-- **QR completion** — customer shows code; driver scans to finish (not a bare button)
-- Driver online/offline feed filtered by vehicle type and dispatch radius
-- Spending / earnings stats (today · week · month · all time)
-- Referral code redeem once per customer or driver
-- Remote app kill-switch for maintenance / emergency lockout
+* **Timing that prices itself:** urgent, later today, or within 2 days — each with a surcharge the platform controls.
+* **Bulk in one shot:** one pickup, up to 10 drop-offs, one driver for the whole batch. Extra drops can be discounted automatically.
+* **Edit while it's open:** change the route, add/remove drops, or cancel a single leg — surviving legs get re-priced on the server.
 
-### Sales reps
+### 💰 2. Fees the client cannot fake
+Order create / update / cancel / batch-accept go through **callable Cloud Functions**. The server reads live pricing config, snapshots the fee, and writes the order. Clients never create order documents directly.
 
-- Referral dashboard (drivers & merchants)
-- Personal shareable referral code
-- Commission summary for the current period
+* **Distance model:** base fee + per km (road distance, straight-line fallback).
+* **Flat zone:** inside Greater Amman vs outside — one number, no km math.
+* **Country-aware money:** Jordanian dinar or Egyptian pound, following the account country.
 
-### Admin web (Arabic RTL)
+### ✅ 3. Completion is a QR scan, not a button
+After pickup is confirmed, the customer shows a QR. The driver scans it to close the drop. That is the completion event — not a tap that anyone can mash.
 
-- Live overview: orders, revenue, completion rate, “needs action” strip
-- Approve / revoke drivers; enable / suspend customers
-- Per-driver earnings and per-merchant commission (mark paid + receipts)
-- Create & manage sales reps, unlink referrals, mark commissions paid
-- Pricing: distance model or Greater Amman flat zone + timing + bulk discounts
-- Dispatch radius and 1★ requester-block rules
-- Support / WhatsApp / developer contact numbers used in-app
+* Customer can **accept or reject** the driver who claimed the job.
+* Either side can call the other from the order screen.
+* After the trip: rate the driver. A 1★ can hide that customer's future open jobs from that driver.
 
----
+### 🛵 4. Drivers only see work they can actually do
+Go online, and the feed is already filtered: vehicle type, dispatch radius, and (optionally) blocked requesters. Bulk jobs land as one card — drop count + total fee — accepted all-or-nothing.
 
-## How a delivery works
+* Pending screen until **admin approval**. No unvetted driver on the road.
+* Today km + earnings at a glance, with full stats (today / week / month / all time).
+* ID, license, and conduct documents uploaded during setup.
 
-1. Customer creates a delivery (map + details + vehicle + timing)
-2. Nearby matching drivers see it and claim
-3. Customer accepts (or rejects) the driver
-4. Driver picks up; customer confirms
-5. At drop-off, driver scans the customer’s **QR**
-6. Trip completes; customer rates the driver
+### 🖥️ 5. Ops actually run the platform
+The admin is a Next.js Arabic RTL dashboard, not a Firebase console with extra steps.
+
+* Dashboard: orders today, revenue from completed fees, completion rate, a “needs action” strip (pending drivers, suspended customers, open orders).
+* Approve / revoke drivers. Enable / suspend customers.
+* Per-driver earnings. Per-merchant commission with receipts and payment history.
+* Live switches for pricing model, timing surcharges, bulk discount, dispatch radius, and in-app support numbers.
+
+### 📣 6. Growth is a referral code, not a spreadsheet
+Admin-provisioned **sales reps** get a personal code, a dashboard of referred drivers and merchants, and a commission period they can actually collect on. Customers and drivers redeem a code once. Admin can unlink and re-attribute.
 
 ---
 
-## Tech snapshot
+## 🛠 Tech Stack & Architecture
 
-| Layer | Stack |
-|-------|--------|
-| Mobile | Flutter · `hooks_riverpod` · `go_router` · Cairo · AR \| EN |
-| Backend | Firebase Auth · Firestore · Storage · Cloud Functions · FCM |
-| Maps | Google Maps / Places / Routes · Maps link paste → coords |
-| Admin | Next.js · Arabic RTL dashboard |
-| Architecture | Feature-first under `lib/features/*` + shared `lib/core/*` |
+* **Framework:** Flutter (Dart) — Arabic & English, Cairo typeface, RTL-ready
+* **State Management:** `hooks_riverpod`
+* **Navigation:** `go_router` with a 4-gate redirect (onboarding → auth → role → setup)
+* **Backend:** Firebase Auth, Firestore, Storage, Cloud Functions, FCM
+* **Maps:** Google Maps / Places / Routes — plus Maps-link paste → coordinates
+* **Admin:** Next.js, Arabic RTL
+* **Architecture:** Feature-first (`lib/features/*`) + shared infra (`lib/core/*`)
 
-Order create / update / cancel / batch accept go through **callable Cloud Functions** (server-side fee snapshots). Clients do not write order docs directly.
-
----
-
-## Trust & safety
-
-- Phone verification + ID document uploads
-- Drivers work only after **admin approval**
-- QR-gated completion
-- Ratings after completed trips
-- Optional hide of a customer’s future open jobs from a driver after a 1★
-- Customer access suspend with in-app support path
-
----
-
-## Brand
-
-| | |
-|---|---|
-| Name | Waslha / وصلة |
-| Primary | `#FB3C04` |
-| Typeface | Cairo |
-| Market focus | Jordan (Egypt supported in-app) |
+Auth is Google, email & password (with email-verify gate), and SMS OTP. Phone verification and document uploads sit in front of real work. A remote kill-switch can lock the app if something goes wrong in production.
 
 ---
 
 <div align="center">
-
-**[English](README.md)** · **[العربية](README.ar.md)**
-
-<br>
-
-<em>Portfolio showcase — source remains private.</em>
-
+  <p>
+    <strong><a href="README.md">English</a></strong> · <strong><a href="README.ar.md">العربية</a></strong>
+  </p>
+  <i>Crafted for real operations, not a demo marketplace.</i>
 </div>
